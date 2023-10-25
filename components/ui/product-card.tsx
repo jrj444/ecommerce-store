@@ -8,13 +8,15 @@ import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
 import usePreviewModal from "@/hooks/use-preview-modal";
 import { MouseEventHandler } from "react";
+import useCart from "@/hooks/use-cart";
 
 interface ProductCardProps {
   data: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  const previewModal = usePreviewModal()
+  const previewModal = usePreviewModal();
+  const cart = useCart();
   const router = useRouter();
 
   const handleClick = () => {
@@ -22,15 +24,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   };
 
   const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.stopPropagation()
-    previewModal.onOpen(data)
-  }
+    event.stopPropagation();
+    previewModal.onOpen(data);
+  };
+
+  const onCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.stopPropagation();
+    cart.addItem(data);
+  };
 
   return (
     <div
       onClick={handleClick}
-      className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4"
-    >
+      className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
       {/* Images and Actions */}
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <Image
@@ -43,11 +49,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           <div className="flex gap-x-6 justify-center">
             <IconButton
               onClick={onPreview}
-              icon={<Expand size={20} className="text-gray-600" />}
+              icon={
+                <Expand
+                  size={20}
+                  className="text-gray-600"
+                />
+              }
             />
             <IconButton
-              onClick={() => { }}
-              icon={<ShoppingCart size={20} className="text-gray-600" />}
+              onClick={onCart}
+              icon={
+                <ShoppingCart
+                  size={20}
+                  className="text-gray-600"
+                />
+              }
             />
           </div>
         </div>
