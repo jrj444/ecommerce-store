@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 const Summary = () => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
+  console.log(items)
   const removeAll = useCart((state) => state.removeAll);
 
   useEffect(() => {
@@ -48,7 +49,12 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button className="w-full mt-6">Checkout</Button>
+      <Button
+        onClick={onCheckout}
+        disabled={items.length === 0}
+        className="w-full mt-6">
+        Checkout
+      </Button>
     </div>
   );
 };
